@@ -38,5 +38,11 @@
 (printf "does the graph contain the newly added node? %q" (:contains *graph* :c2))
 (printf "neighbors for node C: %q" (:neighbors *graph* :c))
 
+# you can also remove the nodes or edges if you don't want them any more 
+(:drop-edge *graph* :c2)
+(printf "neighbors for node C are different now: %q" (:neighbors *graph* :c))
+(:drop-node *graph* :c2)
+(printf "does the graph contain the previously added node? %q" (:contains *graph* :c2))
+
 # you can even find the path (really the edges) from one node to another
 (printf "edges to get from node A to node I: %q" (:find-path *graph* :a :i))
