@@ -95,6 +95,27 @@ check out the docs on any of those macros/functions for more.
         (put-in self [:adjacency-table from :edges name]
                 {:to to :weight weight})))
 
+(defn drop-edge 
+  ```
+  Remove an edge from the graph.
+  ```
+  [self name]
+  (eachk node (self :adjacency-table)
+    (put-in self [:adjacency-table node :edges name] nil)))
+
+(defn drop-node 
+  ```
+  Remove a node and all edges related to it from a graph.
+  ```
+  [self name]
+  
+  (put-in self [:adjacency-table name] nil)
+
+  (eachk node (self :adjacency-table)
+    (eachk edge (((self :adjacency-table) node) :edges)
+      (when (= name (get-in self [:adjacency-table node :edges edge :to]))
+        (put-in self [:adjacency-table node :edges edge] nil)))))
+
 (defn neighbors
   ```
   Return all the neighbors of the node, in the form {:from :name :to :weight}
@@ -203,6 +224,8 @@ check out the docs on any of those macros/functions for more.
   @{:contains contains
     :add-node add-node
     :add-edge add-edge
+    :drop-node drop-node
+    :drop-edge drop-edge 
     :get-node get-node
     :neighbors neighbors
     :list-nodes list-nodes
